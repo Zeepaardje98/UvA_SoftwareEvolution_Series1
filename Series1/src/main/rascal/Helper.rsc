@@ -11,3 +11,13 @@ list[Declaration] getASTs(loc projectLocation) {
         | f <- files(model.containment), isCompilationUnit(f)];
     return asts;
 }
+
+int scoreFromBuckets(map[int, int] buckets) {
+    int total = 0;
+    int score = 0;
+    for (bucket <- buckets) {
+        score += buckets[bucket] * bucket;
+        total += buckets[bucket];
+    }
+    return score / total;
+}
