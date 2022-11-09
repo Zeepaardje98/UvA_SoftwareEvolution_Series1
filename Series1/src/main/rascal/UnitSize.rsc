@@ -1,6 +1,7 @@
 module UnitSize
 
 import Helper;
+import Volume;
 
 import IO;
 import Set;
@@ -12,21 +13,13 @@ import lang::java::m3::AST;
 void unitSize() {
     loc fileLocation = |project://smallsql0.21_src|;
     list[Declaration] asts = getASTs(fileLocation);
-    map[str rank, int nUnits] buckets = ();
+    map[int rank, int nUnits] buckets = ();
     
     myMethods = toList(methods(createM3FromDirectory(fileLocation)));
 
-    println(myMethods);
+    // println(myMethods);
 
     for (method <- myMethods) {
-        println(method);
+        int ranking = getVolumeData(method, false, [10, 20, 50, 60]);
     }
-}
-
-void findLOC(Declaration unit) {
-    println(unit);
-}
-
-int unitLOC() {
-    return 0;
 }

@@ -36,17 +36,17 @@ int getBlankLines(list[str] fileLines) {
 }
 
 // Get the numeric rank value for the volume metric
-int getVolumeRank(int codeLines) {
-    if(codeLines < 66000) {
+int getVolumeRank(int codeLines, list[int] thresholds) {
+    if(codeLines <= thresholds[0]) {
         return 2;
     }
-    else if(codeLines < 246000) {
+    else if(codeLines <= thresholds[1]) {
         return 1;
     }
-    else if(codeLines < 665000) {
+    else if(codeLines <= thresholds[2]) {
         return 0;
     }
-    else if(codeLines < 1310000) {
+    else if(codeLines <= thresholds[3]) {
         return -1;
     }
     else {
@@ -57,7 +57,7 @@ int getVolumeRank(int codeLines) {
 // Returns the (numeric) volume rank of a project.
 // If parameter print is set to true, also print the amount of
 // total lines, comment lines, blank lines, code lines and the volume rank.
-int getVolumeData(loc projectLoc, bool print) {
+int getVolumeData(loc projectLoc, bool print, list[int] thresholds) {
     int totalLines = 0;
     int commentLines = 0;
     int blankLines = 0;
@@ -72,7 +72,7 @@ int getVolumeData(loc projectLoc, bool print) {
     }
 
     int codeLines = totalLines - commentLines - blankLines;
-    int volumeRank = getVolumeRank(codeLines);
+    int volumeRank = getVolumeRank(codeLines, thresholds);
 
     if(print) {
         println("Total lines: <totalLines>");
@@ -88,5 +88,5 @@ int getVolumeData(loc projectLoc, bool print) {
 void main() {
     fileLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/AllTests.java|;
     projectLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src|;
-    getVolumeData(projectLoc, true);
+    getVolumeData(projectLoc, true, [66000, 246000, 665000, 1310000]);
 }
