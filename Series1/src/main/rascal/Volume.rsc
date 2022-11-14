@@ -87,6 +87,6 @@ int getVolumeData(loc projectLoc, bool print) {
 
 void main() {
     fileLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/AllTests.java|;
-    projectLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src|;
+    projectLoc = |file:///home/michelle/Documents/master-se/software-evolution/hsqldb-2.3.1/hsqldb-2.3.1|;
     getVolumeData(projectLoc, true);
 }
