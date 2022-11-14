@@ -3,6 +3,8 @@ module Helper
 import lang::java::m3::Core;
 import lang::java::m3::AST;
 
+import List;
+
 
 // getASTs(|project://smallsql0.21_src|);
 list[Declaration] getASTs(loc projectLocation) {
@@ -20,4 +22,15 @@ int scoreFromBuckets(map[int, int] buckets) {
         total += buckets[bucket];
     }
     return score / total;
+}
+
+int scoreIndex(int n, list[int] thresholds) {
+    int score = size(thresholds);
+    for(threshold <- thresholds) {
+        if (n <= threshold) {
+            return score;
+        }
+        score -= 1;
+    }
+    return score;
 }
