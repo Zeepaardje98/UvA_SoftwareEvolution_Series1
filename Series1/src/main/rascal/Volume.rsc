@@ -57,7 +57,7 @@ int getVolumeRank(int codeLines, list[int] thresholds) {
 // Returns the (numeric) volume rank of a project.
 // If parameter print is set to true, also print the amount of
 // total lines, comment lines, blank lines, code lines and the volume rank.
-int getVolumeData(loc projectLoc, bool print, list[int] thresholds) {
+int volume(loc projectLoc, bool print, list[int] thresholds) {
     int totalLines = 0;
     int commentLines = 0;
     int blankLines = 0;
@@ -88,5 +88,5 @@ int getVolumeData(loc projectLoc, bool print, list[int] thresholds) {
 void main() {
     fileLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/AllTests.java|;
     projectLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src|;
-    getVolumeData(projectLoc, true, [66000, 246000, 665000, 1310000]);
+    volume(projectLoc, true, [66000, 246000, 665000, 1310000]);
 }
