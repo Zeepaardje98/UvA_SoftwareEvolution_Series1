@@ -5,6 +5,7 @@ import lang::java::m3::AST;
 
 import List;
 
+public map [int rankNum, str rankStr] rankMap = (0 : "--",1 : "-",2 : "o",3 : "+",4 : "++");
 
 // getASTs(|project://smallsql0.21_src|);
 list[Declaration] getASTs(loc projectLocation) {
