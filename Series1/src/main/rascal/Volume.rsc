@@ -17,7 +17,8 @@ int getCommentLines(list[str] fileLines) {
     int counter = 0;
     for(line <- fileLines) {
         // source: https://github.com/PhilippDarkow/rascal/blob/master/Assignment1/src/count/CountLines.rsc
-        // TODO: try to make regex myself
+        // TODO: fix a flaw in this regex:  if comment is at very start of file without leading whitespace,
+        // it doesnt detect it
         if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := line) { // regex -> entire string is a comment
             counter += 1;
         }
@@ -39,7 +40,7 @@ int getBlankLines(list[str] fileLines) {
 // Returns the (numeric) volume rank of a project.
 // If parameter print is set to true, also print the amount of
 // total lines, comment lines, blank lines, code lines and the volume rank.
-int getVolumeData(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 665000, 1310000]) {
+int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 665000, 1310000]) {
     int totalLines = 0;
     int commentLines = 0;
     int blankLines = 0;
@@ -70,5 +71,5 @@ int getVolumeData(loc projectLoc, bool print, list[int] thresholds=[66000, 24600
 void main() {
     fileLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/AllTests.java|;
     projectLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src|;
-    getVolumeData(projectLoc, true);
+    volume(projectLoc, true);
 }
