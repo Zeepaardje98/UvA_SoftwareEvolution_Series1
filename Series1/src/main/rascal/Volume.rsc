@@ -3,8 +3,9 @@ module Volume
 import IO;
 import List;
 import util::FileSystem;
+import Helper;
 
-map [int rankNum, str rankStr] rank = (-2 : "--",-1 : "-",0 : "o",1 : "+",2 : "++");
+map [int rankNum, str rankStr] rank = (0 : "--",1 : "-",2 : "o",3 : "+",4 : "++");
 
 // Get the total amount of lines in a single file
 int getTotalLines(list[str] fileLines) {
@@ -36,29 +37,10 @@ int getBlankLines(list[str] fileLines) {
     return counter;
 }
 
-// Get the numeric rank value for the volume metric
-int getVolumeRank(int codeLines, list[int] thresholds) {
-    if(codeLines <= thresholds[0]) {
-        return 2;
-    }
-    else if(codeLines <= thresholds[1]) {
-        return 1;
-    }
-    else if(codeLines <= thresholds[2]) {
-        return 0;
-    }
-    else if(codeLines <= thresholds[3]) {
-        return -1;
-    }
-    else {
-        return -2;
-    }
-}
-
 // Returns the (numeric) volume rank of a project.
 // If parameter print is set to true, also print the amount of
 // total lines, comment lines, blank lines, code lines and the volume rank.
-int volume(loc projectLoc, bool print, list[int] thresholds) {
+int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 665000, 1310000]) {
     int totalLines = 0;
     int commentLines = 0;
     int blankLines = 0;
@@ -73,7 +55,7 @@ int volume(loc projectLoc, bool print, list[int] thresholds) {
     }
 
     int codeLines = totalLines - commentLines - blankLines;
-    int volumeRank = getVolumeRank(codeLines, thresholds);
+    int volumeRank = scoreIndex(codeLines, thresholds);
 
     if(print) {
         println("Total lines: <totalLines>");
@@ -87,7 +69,7 @@ int volume(loc projectLoc, bool print, list[int] thresholds) {
 }
 
 void main() {
-    projectLoc = |project://smallsql0.21_src|;
-    testFile = |file:///home/michelle/Documents/master-se/software-evolution/UvA_SoftwareEvolution_Series0/Series1/testfile.txt|;
-    volume(testFile, true, [66000, 246000, 665000, 1310000]);
+    fileLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/AllTests.java|;
+    projectLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src|;
+    volume(projectLoc, true);
 }
