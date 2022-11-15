@@ -60,7 +60,7 @@ int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 6650
         println("Comment lines: <commentLines>");
         println("Blank lines: <blankLines>");
         println("Code lines: <codeLines>");
-        println("Volume rank: <getRank(volumeRank)>");
+        println("Volume score: <getRank(volumeRank)>");
     }
 
     return volumeRank;

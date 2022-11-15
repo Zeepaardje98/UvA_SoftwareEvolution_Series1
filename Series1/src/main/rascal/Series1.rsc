@@ -11,8 +11,17 @@ import lang::java::m3::AST;
 
 void main() {
     projectLoc = |project://smallsql0.21_src|;
+
+    println("-------------------------------------");
     println("--- Maintainability Metric Scores ---");
-    println("Volume: <getRank(volume(projectLoc, false))>");
+    println("-------------------------------------\n");
+    println("--------------");
+    println("--- Volume ---");
+    println("--------------");
+    volume(projectLoc, true);
+    println("\n-------------------");
+    println("--- Duplication ---");
+    println("-------------------");
     // println("Unit size: <getRank(unitSize())>");
-    println("Duplication: <getRank(duplication(projectLoc, false))>");
+    duplication(projectLoc, true);
 }
