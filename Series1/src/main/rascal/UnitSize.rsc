@@ -21,8 +21,9 @@ str unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
         // https://arxiv.org/pdf/2205.01842.pdf
         int volumeScore = getVolumeData(method, false, thresholds=[24, 36, 63]);
         bucketsVolume[volumeScore]?0 += 1;
-
-        int CCScore = getCCData(method);
+        
+        println(method[1]);
+        int CCScore = getCCData(method[1]);
         bucketsCC[CCScore]?0 += 1;
     }
 
