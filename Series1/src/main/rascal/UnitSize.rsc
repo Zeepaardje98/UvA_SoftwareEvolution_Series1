@@ -22,13 +22,18 @@ str unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
         int volumeScore = getVolumeData(method, false, thresholds=[24, 36, 63]);
         bucketsVolume[volumeScore]?0 += 1;
 
-        // int CCScore = getCCData(method);
-        // bucketsCC[CCScore]?0 += 1;
+        int CCScore = getCCData(method);
+        bucketsCC[CCScore]?0 += 1;
     }
 
     for (key <- bucketsVolume) {
         bucketsVolume[key] = (bucketsVolume[key] / size(myMethods)) * 100;
     }
+    for (key <- bucketsCC) {
+        bucketsCC[key] = (bucketsCC[key] / size(myMethods)) * 100;
+    }
+
+    println(bucketsCC);
 
     // Maximum LOC in risk groups: very high, high, moderate.
     rankTable = [[0,0,25],[0,5,30],[0,10,40],[5,15,50]];
@@ -50,22 +55,22 @@ str rankFromBuckets(map[int, num] percentages, list[list[int]] rankTable) {
             rankIsValid = false;
             break;
         }
-
         // If the current rank is the right one, return it.
         if (rankIsValid) {
             println(rank);
             return rankMap[nRank];
         }
+        // Current rank is not applicable. Try 1 rank lower.
         nRank = nRank - 1;
     }
     return rankMap[nRank];
 }
 
-int getCCData(loc fileLocation) {
+int getCCData(loc fileLocation, list[int] thresholds=[10,20,50]) {
     int complexity = 0;
-    Declaration methodAST = getASTs(fileLocation);
+    list[Declaration] methodAST = getASTs(fileLocation);
     visit(methodAST) {
         case \if(_, _) : complexity += 1;
     }
-    return complexity;
+    return scoreIndex(complexity, thresholds);
 }
