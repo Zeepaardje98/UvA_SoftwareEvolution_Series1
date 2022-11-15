@@ -1,11 +1,12 @@
 module Volume
 
-import IO;
-import List;
-import util::FileSystem;
 import Helper;
 
-map [int rankNum, str rankStr] rank = (0 : "--",1 : "-",2 : "o",3 : "+",4 : "++");
+import IO;
+import List;
+
+import util::FileSystem;
+
 
 // Get the total amount of lines in a single file
 int getTotalLines(list[str] fileLines) {
@@ -16,10 +17,7 @@ int getTotalLines(list[str] fileLines) {
 int getCommentLines(list[str] fileLines) {
     int counter = 0;
     for(line <- fileLines) {
-        // source: https://github.com/PhilippDarkow/rascal/blob/master/Assignment1/src/count/CountLines.rsc
-        // TODO: fix a flaw in this regex:  if comment is at very start of file without leading whitespace,
-        // it doesnt detect it
-        if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := line) { // regex -> entire string is a comment
+        if (isCommentLine(line)) {
             counter += 1;
         }
     }
@@ -30,7 +28,7 @@ int getCommentLines(list[str] fileLines) {
 int getBlankLines(list[str] fileLines) {
     int counter = 0;
     for(line <- fileLines) {
-        if(/^\s*$/ := line) { // regex -> entire string is whitespace
+        if (isBlankLine(line)) {
             counter += 1;
         }
     }
@@ -62,7 +60,7 @@ int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 6650
         println("Comment lines: <commentLines>");
         println("Blank lines: <blankLines>");
         println("Code lines: <codeLines>");
-        println("Volume rank: <rank[volumeRank]>");
+        println("Volume rank: <getRank(volumeRank)>");
     }
 
     return volumeRank;
