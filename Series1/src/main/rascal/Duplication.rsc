@@ -67,9 +67,8 @@ int duplication(loc projectLoc, bool print, list[int] thresholds = [3, 5, 10, 20
     map[int, int] lineNrMap = cleanFileData[1];
 
     // Compute duplication score
-    // +1 for user readability, because line numbers start at 1 not zero
-    duplicateLines = {lineNrMap[d] + 1 | d <- findDuplicates(cleanFileLines, 3)};
-    duplicationPercentage = toInt(toReal(size(duplicateLines)) / toReal(size(fileLines)) * 100);
+    duplicateLines = {lineNrMap[d] + 1 | d <- findDuplicates(cleanFileLines, 6)}; // + 1 for user readability
+    duplicationPercentage = toInt(toReal(size(duplicateLines)) / toReal(size(cleanFileLines)) * 100);
     duplicationScore = scoreIndex(duplicationPercentage, thresholds);
 
     if (print) {
