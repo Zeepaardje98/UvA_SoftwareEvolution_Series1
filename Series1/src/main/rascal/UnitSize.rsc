@@ -11,7 +11,7 @@ import lang::java::m3::Core;
 import lang::java::m3::AST;
 
 
-str unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
+tuple[str, str] unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
     map[int rank, num nUnits] bucketsVolume = ();
     map[int rank, num nUnits] bucketsCC = ();
     
@@ -21,12 +21,12 @@ str unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
         // Moderate, high, and very high risk. Scores are based on:
         // https://arxiv.org/pdf/2205.01842.pdf
 
-        int volumeScore = getVolumeData(method, false, thresholds=[24, 36, 63]);
+        int volumeScore = volume(method, false, thresholds=[24, 36, 63]);
         bucketsVolume[volumeScore]?0 += 1;
         
-        println(method[1]);
-        int CCScore = getCCData(method[1]);
+        int CCScore = getCCData(method);
         bucketsCC[CCScore]?0 += 1;
+
     }
 
     for (key <- bucketsVolume) {
@@ -35,12 +35,12 @@ str unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
     for (key <- bucketsCC) {
         bucketsCC[key] = (bucketsCC[key] / size(myMethods)) * 100;
     }
-
-    println(bucketsCC);
+    // println(bucketsVolume);
+    // println(bucketsCC);
 
     // Maximum LOC in risk groups: very high, high, moderate.
     rankTable = [[0,0,25],[0,5,30],[0,10,40],[5,15,50]];
-    return rankFromBuckets(bucketsVolume, rankTable);
+    return <rankFromBuckets(bucketsVolume, rankTable), rankFromBuckets(bucketsCC, rankTable)>;
 }
 
 str rankFromBuckets(map[int, num] percentages, list[list[int]] rankTable) {
@@ -60,7 +60,6 @@ str rankFromBuckets(map[int, num] percentages, list[list[int]] rankTable) {
         }
         // If the current rank is the right one, return it.
         if (rankIsValid) {
-            println(rank);
             return rankMap[nRank];
         }
         // Current rank is not applicable. Try 1 rank lower.
@@ -71,9 +70,17 @@ str rankFromBuckets(map[int, num] percentages, list[list[int]] rankTable) {
 
 int getCCData(loc fileLocation, list[int] thresholds=[10,20,50]) {
     int complexity = 0;
-    list[Declaration] methodAST = getASTs(fileLocation);
+    Declaration methodAST = createAstFromFile(fileLocation, true);
+    // Complexity is increased by if, switch-case, for, while, do.
     visit(methodAST) {
-        case \if(_, _) : complexity += 1;
+        case \do(Statement body, _) : complexity += 1;
+        case \foreach(_, _, Statement body) : complexity += 1;
+        case \for(_, _, _, Statement body) : complexity += 1;
+        case \for (_, _, Statement body) : complexity += 1;
+        case \if(_, Statement thenBranch) : complexity += 1;
+        case \if(_, Statement thenBranch, Statement elseBranch) : complexity += 2;
+        case \switch(_, list[Statement] statements) : complexity += size(statements);
+        case \while (_, Statement body) : complexity += 1;
     }
     return scoreIndex(complexity, thresholds);
 }
