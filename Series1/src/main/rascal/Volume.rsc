@@ -16,7 +16,8 @@ int getCommentLines(list[str] fileLines) {
     int counter = 0;
     for(line <- fileLines) {
         // source: https://github.com/PhilippDarkow/rascal/blob/master/Assignment1/src/count/CountLines.rsc
-        // TODO: try to make regex myself
+        // TODO: fix a flaw in this regex:  if comment is at very start of file without leading whitespace,
+        // it doesnt detect it
         if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := line) { // regex -> entire string is a comment
             counter += 1;
         }
@@ -86,7 +87,7 @@ int volume(loc projectLoc, bool print, list[int] thresholds) {
 }
 
 void main() {
-    fileLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/AllTests.java|;
-    projectLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src|;
-    volume(projectLoc, true, [66000, 246000, 665000, 1310000]);
+    projectLoc = |project://smallsql0.21_src|;
+    testFile = |file:///home/michelle/Documents/master-se/software-evolution/UvA_SoftwareEvolution_Series0/Series1/testfile.txt|;
+    volume(testFile, true, [66000, 246000, 665000, 1310000]);
 }

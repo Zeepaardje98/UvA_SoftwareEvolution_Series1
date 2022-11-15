@@ -1,0 +1,41 @@
+hier
+een
+  // random
+
+file
+file
+
+met wat
+
+duplicates
+duplicates
+
+maar maar 1 duplicate block
+en ook valse one line duplicates
+
+hier
+een
+  // random
+
+file
+file
+
+met wat
+
+duplicates
+duplicates
+
+met wat
+
+extra duplicates
+
+hier
+een
+  // random
+
+file
+file
+
+met wat
+
+duplicates
