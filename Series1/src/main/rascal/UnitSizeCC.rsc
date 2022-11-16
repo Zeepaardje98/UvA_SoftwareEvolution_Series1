@@ -40,10 +40,10 @@ tuple[int, int] unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
 
     // Maximum LOC in risk groups: very high, high, moderate.
     rankTable = [[0,0,25],[0,5,30],[0,10,40],[5,15,50]];
-    return <rankFromBuckets(bucketsVolume, rankTable), rankFromBuckets(bucketsCC, rankTable)>;
+    return <rankFromPercentages(bucketsVolume, rankTable), rankFromPercentages(bucketsCC, rankTable)>;
 }
 
-int rankFromBuckets(map[int, num] percentages, list[list[int]] rankTable) {
+int rankFromPercentages(map[int, num] percentages, list[list[int]] rankTable) {
     int nRank = size(rankTable);
     for (rank <- rankTable) {
         bool rankIsValid = true;

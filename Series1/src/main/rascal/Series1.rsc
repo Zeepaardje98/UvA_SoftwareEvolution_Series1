@@ -9,9 +9,7 @@ import IO;
 import lang::java::m3::Core;
 import lang::java::m3::AST;
 
-void main() {
-    projectLoc = |project://smallsql0.21_src|;
-
+void main(loc projectLoc = |project://smallsql0.21_src|) {
     println("-------------------------------------");
     println("--- Maintainability Metric Scores ---");
     println("-------------------------------------\n");
