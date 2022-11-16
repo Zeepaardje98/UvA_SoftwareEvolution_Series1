@@ -4,6 +4,7 @@ import Helper;
 
 import IO;
 import List;
+import Set;
 
 import util::FileSystem;
 import lang::java::m3::Core;
@@ -40,14 +41,19 @@ int getBlankLines(list[str] fileLines) {
 // Returns the (numeric) volume rank of a project.
 // If parameter print is set to true, also print the amount of
 // total lines, comment lines, blank lines, code lines and the volume rank.
-int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 665000, 1310000]) {
+int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 665000, 1310000], bool methods=false) {
     int totalLines = 0;
     int commentLines = 0;
     int blankLines = 0;
-
-    M3 model = createM3FromMavenProject(projectLoc);
-    list[loc] projectFiles = [ f | f <- files(model.containment), isCompilationUnit(f)];
-
+    
+    list[loc] projectFiles;
+    if (methods) {
+        projectFiles = toList(files(projectLoc));
+    } else {
+        M3 model = createM3FromMavenProject(projectLoc);
+        projectFiles = [ f | f <- files(model.containment), isCompilationUnit(f)];
+    }
+    
     for(f <- projectFiles) {
         list[str] fileLines = readFileLines(f);
         totalLines += getTotalLines(fileLines);
