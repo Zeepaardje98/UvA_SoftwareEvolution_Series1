@@ -6,6 +6,8 @@ import IO;
 import List;
 
 import util::FileSystem;
+import lang::java::m3::Core;
+import lang::java::m3::AST;
 
 
 // Get the total amount of lines in a single file
@@ -43,7 +45,8 @@ int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 6650
     int commentLines = 0;
     int blankLines = 0;
 
-    set[loc] projectFiles = files(projectLoc);
+    M3 model = createM3FromMavenProject(projectLoc);
+    list[loc] projectFiles = [ f | f <- files(model.containment), isCompilationUnit(f)];
 
     for(f <- projectFiles) {
         list[str] fileLines = readFileLines(f);
@@ -67,7 +70,6 @@ int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 6650
 }
 
 void main() {
-    fileLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src/src/smallsql/junit/AllTests.java|;
-    projectLoc = |file:///home/michelle/Documents/master-se/software-evolution/smallsql0.21_src/smallsql0.21_src|;
+    projectLoc = |project://smallsql0.21_src|;
     volume(projectLoc, true);
 }

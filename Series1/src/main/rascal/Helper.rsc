@@ -63,6 +63,8 @@ bool isCommentLine(str line) {
             return true;
         case /^[\s\t\n]*(^\/\*).*$/ :        // trimmed line starts with a /*
             return true;
+        case /(\*\/$)/ :        // trimmed line ends with a */
+            return true;
         default :
             return false;
     }
