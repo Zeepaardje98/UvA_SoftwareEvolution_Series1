@@ -20,8 +20,7 @@ tuple[int, int] unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
         // Divide the methods to 'buckets' depending on their Volume score:
         // Moderate, high, and very high risk. Scores are based on:
         // https://arxiv.org/pdf/2205.01842.pdf
-
-        int volumeScore = volume(method, false, thresholds=[24, 36, 63]);
+        int volumeScore = volume(method, false, thresholds=[24, 36, 63], methods=true);
         bucketsVolume[volumeScore]?0 += 1;
         
         int CCScore = getCCData(method);
