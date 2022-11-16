@@ -9,6 +9,8 @@ import String;
 
 import util::FileSystem;
 import util::Math;
+import lang::java::m3::Core;
+import lang::java::m3::AST;
 
 
 // Function to remove blank lines and comments and create a map of the new
@@ -54,7 +56,8 @@ set[int] findDuplicates(list [str] file, int blockSize) {
 // Parse the file, compute the duplicate blocks and calculate the duplication score
 int duplication(loc projectLoc, bool print, list[int] thresholds = [3, 5, 10, 20]) {
     list[str] fileLines = [];
-    set[loc] projectFiles = files(projectLoc);
+    M3 model = createM3FromMavenProject(projectLoc);
+    list[loc] projectFiles = [ f | f <- files(model.containment), isCompilationUnit(f)];
 
     // Put all project file lines into one big file
     for(f <- projectFiles) {
