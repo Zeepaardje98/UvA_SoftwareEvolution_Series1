@@ -48,7 +48,7 @@ str getRank(int score) {
 
 // Check if a line is a blank line using RegEx
 bool isBlankLine(str line) {
-    if (/^\s*$/ := line) {
+    if (/^[\s\t\n]*$/ := line) {
         return true;
     }
     return false;
@@ -57,11 +57,11 @@ bool isBlankLine(str line) {
 // Check if a line is a comment using RegEx
 bool isCommentLine(str line) {
     switch (trim(line)) {
-        case /(^\/\/(\/*))/ :   // trimmed line starts with 2+ slashes
+        case /^[\s\t\n]*(\/\/).*$/ :   // trimmed line starts with 2+ slashes
             return true;
-        case /(^\*)/ :          // trimmed line starts with a * (not fully theoretically sound)
+        case /^[\s\t\n]*(\*).*$/ :          // trimmed line starts with a * (not fully theoretically sound)
             return true;
-        case /(^\/\*)/ :        // trimmed line starts with a /*
+        case /^[\s\t\n]*(^\/\*).*$/ :        // trimmed line starts with a /*
             return true;
         default :
             return false;

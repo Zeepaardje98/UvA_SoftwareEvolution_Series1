@@ -1,4 +1,4 @@
-module UnitSize
+module UnitSizeCC
 
 import Helper;
 import Volume;
@@ -11,7 +11,7 @@ import lang::java::m3::Core;
 import lang::java::m3::AST;
 
 
-tuple[str, str] unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
+tuple[int, int] unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
     map[int rank, num nUnits] bucketsVolume = ();
     map[int rank, num nUnits] bucketsCC = ();
     
@@ -43,7 +43,7 @@ tuple[str, str] unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
     return <rankFromBuckets(bucketsVolume, rankTable), rankFromBuckets(bucketsCC, rankTable)>;
 }
 
-str rankFromBuckets(map[int, num] percentages, list[list[int]] rankTable) {
+int rankFromBuckets(map[int, num] percentages, list[list[int]] rankTable) {
     int nRank = size(rankTable);
     for (rank <- rankTable) {
         bool rankIsValid = true;
@@ -60,12 +60,12 @@ str rankFromBuckets(map[int, num] percentages, list[list[int]] rankTable) {
         }
         // If the current rank is the right one, return it.
         if (rankIsValid) {
-            return rankMap[nRank];
+            return nRank;
         }
         // Current rank is not applicable. Try 1 rank lower.
         nRank = nRank - 1;
     }
-    return rankMap[nRank];
+    return nRank;
 }
 
 int getCCData(loc fileLocation, list[int] thresholds=[10,20,50]) {
