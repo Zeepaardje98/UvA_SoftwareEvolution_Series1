@@ -41,11 +41,6 @@ int scoreIndex(int n, list[int] thresholds) {
     return score;
 }
 
-str getRank(int score) {
-    map [int rankNum, str rankStr] rank = (0 : "--",1 : "-",2 : "o",3 : "+",4 : "++");
-    return rank[score];
-}
-
 // Check if a line is a blank line using RegEx
 bool isBlankLine(str line) {
     if (/^[\s\t\n]*$/ := line) {
@@ -59,11 +54,11 @@ bool isCommentLine(str line) {
     switch (trim(line)) {
         case /^[\s\t\n]*(\/\/).*$/ :   // trimmed line starts with 2+ slashes
             return true;
-        case /^[\s\t\n]*(\*).*$/ :          // trimmed line starts with a * (not fully theoretically sound)
+        case /^[\s\t\n]*(\*).*$/ :     // trimmed line starts with a * (not fully theoretically sound)
             return true;
-        case /^[\s\t\n]*(^\/\*).*$/ :        // trimmed line starts with a /*
+        case /^[\s\t\n]*(^\/\*).*$/ :  // trimmed line starts with a /*
             return true;
-        case /(\*\/$)/ :        // trimmed line ends with a */
+        case /(\*\/$)/ :               // trimmed line ends with a */
             return true;
         default :
             return false;

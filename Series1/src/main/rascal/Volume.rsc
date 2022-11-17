@@ -45,7 +45,7 @@ int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 6650
     int totalLines = 0;
     int commentLines = 0;
     int blankLines = 0;
-    
+
     list[loc] projectFiles;
     if (methods) {
         projectFiles = toList(files(projectLoc));
@@ -53,7 +53,7 @@ int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 6650
         M3 model = createM3FromMavenProject(projectLoc);
         projectFiles = [ f | f <- files(model.containment), isCompilationUnit(f)];
     }
-    
+
     for(f <- projectFiles) {
         list[str] fileLines = readFileLines(f);
         totalLines += getTotalLines(fileLines);
@@ -69,7 +69,7 @@ int volume(loc projectLoc, bool print, list[int] thresholds=[66000, 246000, 6650
         println("Comment lines: <commentLines>");
         println("Blank lines: <blankLines>");
         println("Code lines: <codeLines>");
-        println("Volume score: <getRank(volumeRank)>");
+        println("Volume score: <rankMap[volumeRank]>");
     }
 
     return volumeRank;
