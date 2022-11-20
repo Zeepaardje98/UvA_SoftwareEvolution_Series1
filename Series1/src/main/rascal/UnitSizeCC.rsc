@@ -44,8 +44,6 @@ tuple[int, int] unitSizeAndCC(bool print = false, loc fileLocation=|project://sm
         println("CC: Percentage in high risk: <bucketsCC[1]>");
         println("CC: Percentage in very high risk: <bucketsCC[2]>");
     }
-    // println(bucketsVolume);
-    // println(bucketsCC);
 
     // Maximum LOC in risk groups: very high, high, moderate.
     rankTable = [[0,0,25],[0,5,30],[0,10,40],[5,15,50]];
