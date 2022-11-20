@@ -21,16 +21,14 @@ void main(loc projectLoc = |project://smallsql0.21_src|) {
     println("--- Duplication ---");
     println("-------------------");
     int duplication = duplication(projectLoc, true);
-    tuple[int, int] UnitSizeCC = unitSizeAndCC(fileLocation=projectLoc);
+
+    println("\n------------------------");
+    println("--- Unit Size and CC ---");
+    println("------------------------");
+    tuple[int, int] UnitSizeCC = unitSizeAndCC(print=true, fileLocation=projectLoc);
     int unitSize = UnitSizeCC[0];
     int unitCC = UnitSizeCC[1];
-    println("\n-----------------");
-    println("--- Unit Size ---");
-    println("-----------------");
     println("UnitSize Score: <rankMap[unitSize]>");
-    println("\n---------------");
-    println("--- Unit CC ---");
-    println("---------------");
     println("Unit Cyclomatic Complexity Score: <rankMap[unitCC]> \n");
 
     int analysability = (volume + duplication + unitSize) / 3;
@@ -43,5 +41,5 @@ void main(loc projectLoc = |project://smallsql0.21_src|) {
     println("Testability: <rankMap[testability]>");
 
     int maintainability = ((volume + duplication + unitSize) + (unitCC + duplication) + (unitCC + unitSize)) / 7;
-    println("Maintainability: <rankMap[maintainability]>");
+    println("Maintainability Score: <rankMap[maintainability]>");
 }
