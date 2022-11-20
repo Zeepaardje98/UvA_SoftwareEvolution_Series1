@@ -11,7 +11,7 @@ import lang::java::m3::Core;
 import lang::java::m3::AST;
 
 
-tuple[int, int] unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
+tuple[int, int] unitSizeAndCC(bool print = false, loc fileLocation=|project://smallsql0.21_src|) {
     map[int rank, num nUnits] bucketsVolume = ();
     map[int rank, num nUnits] bucketsCC = ();
     
@@ -33,6 +33,16 @@ tuple[int, int] unitSizeAndCC(loc fileLocation=|project://smallsql0.21_src|) {
     }
     for (key <- bucketsCC) {
         bucketsCC[key] = (bucketsCC[key] / size(myMethods)) * 100;
+    }
+
+    if (print) {
+        println("Methods analyzed: <size(myMethods)>");
+        println("Size: Percentage in moderate risk: <bucketsVolume[0]>");
+        println("Size: Percentage in high risk: <bucketsVolume[1]>");
+        println("Size: Percentage in very high risk: <bucketsVolume[2]>");
+        println("CC: Percentage in moderate risk: <bucketsCC[0]>");
+        println("CC: Percentage in high risk: <bucketsCC[1]>");
+        println("CC: Percentage in very high risk: <bucketsCC[2]>");
     }
     // println(bucketsVolume);
     // println(bucketsCC);
@@ -79,7 +89,9 @@ int getCCData(loc fileLocation, list[int] thresholds=[10,20,50]) {
         case \if(_, Statement thenBranch) : complexity += 1;
         case \if(_, Statement thenBranch, Statement elseBranch) : complexity += 2;
         case \switch(_, list[Statement] statements) : complexity += size(statements);
+        case \catch(_, Statement body) : complexity += 1;
         case \while (_, Statement body) : complexity += 1;
+
     }
     return scoreIndex(complexity, thresholds);
 }
