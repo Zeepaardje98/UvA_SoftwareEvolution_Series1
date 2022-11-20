@@ -8,7 +8,9 @@ import String;
 
 public map [int rankNum, str rankStr] rankMap = (0 : "--",1 : "-",2 : "o",3 : "+",4 : "++");
 
-// getASTs(|project://smallsql0.21_src|);
+
+// Get the ASTs of a project.
+// Usage: getASTs(|project://smallsql0.21_src|);
 list[Declaration] getASTs(loc projectLocation) {
     M3 model = createM3FromMavenProject(projectLocation);
     list[Declaration] asts = [createAstFromFile(f, true)
@@ -41,11 +43,6 @@ int scoreIndex(int n, list[int] thresholds) {
     return score;
 }
 
-str getRank(int score) {
-    map [int rankNum, str rankStr] rank = (0 : "--",1 : "-",2 : "o",3 : "+",4 : "++");
-    return rank[score];
-}
-
 // Check if a line is a blank line using RegEx
 bool isBlankLine(str line) {
     if (/^[\s\t\n]*$/ := line) {
@@ -57,11 +54,11 @@ bool isBlankLine(str line) {
 // Check if a line is a comment using RegEx
 bool isCommentLine(str line) {
     switch (trim(line)) {
-        case /^[\s\t\n]*(\/\/).*$/ :   // trimmed line starts with 2+ slashes
+        case /(^\/\/(\/*))/ :   // trimmed line starts with 2+ slashes
             return true;
-        case /^[\s\t\n]*(\*).*$/ :          // trimmed line starts with a * (not fully theoretically sound)
+        case /(^\*)/ :          // trimmed line starts with a * (not fully theoretically sound)
             return true;
-        case /^[\s\t\n]*(^\/\*).*$/ :        // trimmed line starts with a /*
+        case /(^\/\*)/ :        // trimmed line starts with a /*
             return true;
         case /(\*\/$)/ :        // trimmed line ends with a */
             return true;

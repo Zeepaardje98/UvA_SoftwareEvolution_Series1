@@ -13,15 +13,16 @@ void main(loc projectLoc = |project://smallsql0.21_src|) {
     println("-------------------------------------");
     println("--- Maintainability Metric Scores ---");
     println("-------------------------------------\n");
+
     println("--------------");
     println("--- Volume ---");
     println("--------------");
     int volume = volume(projectLoc, true);
+
     println("\n-------------------");
     println("--- Duplication ---");
     println("-------------------");
     int duplication = duplication(projectLoc, true);
-
     println("\n------------------------");
     println("--- Unit Size and CC ---");
     println("------------------------");
@@ -31,12 +32,16 @@ void main(loc projectLoc = |project://smallsql0.21_src|) {
     println("UnitSize Score: <rankMap[unitSize]>");
     println("Unit Cyclomatic Complexity Score: <rankMap[unitCC]> \n");
 
+    println("\n---------------");
+    println("--- Maintainability scores ---");
+    println("---------------");
+
     int analysability = (volume + duplication + unitSize) / 3;
     println("Analysability: <rankMap[analysability]>");
 
     int changeability = (unitCC + duplication) / 2;
     println("Changeability: <rankMap[changeability]>");
-    
+
     int testability = (unitCC + unitSize) / 2;
     println("Testability: <rankMap[testability]>");
 

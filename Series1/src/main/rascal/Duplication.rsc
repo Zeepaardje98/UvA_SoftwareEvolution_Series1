@@ -31,29 +31,44 @@ tuple[list [str], map[int, int]] cleanUpFile(list [str] file) {
     return <cleanFile, lineNrMap>;
 }
 
+// Function to concatenate a list of strings (the lines of a codeblock).
+str concatenateLines(list[str] lines) {
+    str string = "";
+
+    for(l <- lines) {
+        string += l;
+    }
+
+    return string;
+}
+
 // Function that hashes a file into a map with a code block as the key,
 // and the corresponding line numbers as the values.
 // If a hash key already exists, that means there is a duplicate block,
 // and the line numbers will be added to a set of duplicate lines.
 set[int] findDuplicates(list [str] file, int blockSize) {
-    map[list[str], list[int]] codeBlocks = ();
+    map[str, list[int]] codeBlocks = ();
     set[int] duplicateLines = {};
 
     for (n <- [0..size(file) - blockSize + 1]) {
-        // indicates a duplicate block
-        if (file[n..n + blockSize] in codeBlocks) {
-            codeBlocks[file[n..n + blockSize]] += [n..n + blockSize];
-            duplicateLines += toSet(codeBlocks[file[n..n + blockSize]]);
+
+        // This is necessary to have a valid key in our codeBlock map to compare with.
+        blockString = concatenateLines(file[n..n + blockSize]);
+
+        // indicates the existence of a duplicate block
+        if (blockString in codeBlocks) {
+            codeBlocks[blockString] += [n..n + blockSize];
+            duplicateLines += toSet(codeBlocks[blockString]);
         }
         else {
-            codeBlocks[file[n..n + blockSize]] = [n..n + blockSize];
+            codeBlocks[blockString] = [n..n + blockSize];
         }
     }
 
     return duplicateLines;
 }
 
-// Parse the file, compute the duplicate blocks and calculate the duplication score
+// Parse the file, compute the duplicate lines and calculate the duplication score
 int duplication(loc projectLoc, bool print, list[int] thresholds = [3, 5, 10, 20]) {
     list[str] fileLines = [];
     M3 model = createM3FromMavenProject(projectLoc);
@@ -77,7 +92,7 @@ int duplication(loc projectLoc, bool print, list[int] thresholds = [3, 5, 10, 20
     if (print) {
         println("Amount of duplicate lines: <size(duplicateLines)>");
         println("Duplication percentage: <duplicationPercentage>%");
-        println("Duplication score: <getRank(duplicationScore)>");
+        println("Duplication score: <rankMap[duplicationScore]>");
     }
 
     return duplicationScore;
